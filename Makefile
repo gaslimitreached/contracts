@@ -14,8 +14,6 @@ remove :; rm -rf .gitmodules && rm -rf .git/modules/* && rm -rf lib && touch .gi
 install :;
 	forge install --no-commit dapphub/ds-test
 	forge install --no-commit brockelmore/forge-std
-	forge install --no-commit rari-capital/solmate
-	forge install --no-commit openzeppelin/openzeppelin-contracts
 
 # Update Dependencies
 update:; forge update
