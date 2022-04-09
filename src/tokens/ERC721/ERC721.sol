@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import "./IERC721.sol";
-import "./IERC721Receiver.sol";
+import "./IERC721TokenReceiver.sol";
 import "./extensions/IERC721Metadata.sol";
 import "../../utils/introspection/IERC165.sol";
 import "../../utils/Strings.sol";
