@@ -14,8 +14,8 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
     string public name;
     string public symbol;
  
-    mapping (address => uint256) public balanceOf;
-    mapping (uint256 => address) public ownerOf;
+    mapping (address => uint256) internal balances;
+    mapping (uint256 => address) internal owners;
     mapping (uint256 => address) public getApproved;
     mapping (address => mapping(address => bool)) public isApprovedForAll;
 
@@ -31,8 +31,18 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
         symbol = symbol_;
     }
 
+    function balanceOf(address owner) external view returns (uint256) {
+        require(owner != address(0), "ERC721: zero address");
+        return balances[owner];
+    }
+
+    function ownerOf(uint256 tokenId) external view returns (address owner) {
+        owner = owners[tokenId];
+        require(owner != address(0), "ERC721: nonexistent");
+    }
+
     function tokenURI(uint256 tokenId) public view virtual returns (string memory) {
-        require(ownerOf[tokenId] != address(0), "ERC721Metadata: nonexistent token");
+        require(owners[tokenId] != address(0), "ERC721: nonexistent");
         string memory baseURI = _baseURI();
         return bytes(baseURI).length > 0
             ? string(abi.encodePacked(baseURI, tokenId.toString()))
@@ -43,7 +53,7 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
     function approve(address approved, uint256 tokenId)
         external payable 
     {
-        address owner = ownerOf[tokenId];
+        address owner = owners[tokenId];
         require(
             msg.sender == owner
             || isApprovedForAll[owner][msg.sender],
@@ -67,8 +77,8 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
         this.transferFrom(from, to, tokenId);
         require(
             to.code.length == 0
-            || ERC721Receiver(to).onERC721Received(msg.sender, from, tokenId, "") ==
-                ERC721Receiver.onERC721Received.selector,
+            || IERC721TokenReceiver(to).onERC721Received(msg.sender, from, tokenId, "") ==
+                IERC721TokenReceiver.onERC721Received.selector,
             "Transfer to non ERC271Receiver"    
         );
     }
@@ -79,8 +89,8 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
         this.transferFrom(from, to, tokenId);
         require(
             to.code.length == 0
-            || ERC721Receiver(to).onERC721Received(msg.sender, from, tokenId, data) ==
-                ERC721Receiver.onERC721Received.selector,
+            || IERC721TokenReceiver(to).onERC721Received(msg.sender, from, tokenId, data) ==
+                IERC721TokenReceiver.onERC721Received.selector,
             "Transfer to non ERC271Receiver"    
         );
     }
@@ -88,7 +98,7 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
     function transferFrom(address from, address to, uint256 tokenId)
         external payable
     {
-        require(from == ownerOf[tokenId], "Invalid from");
+        require(from == owners[tokenId], "Invalid from");
         require(to != address(0), "Invalid to");
         require(
             msg.sender == from
@@ -97,10 +107,10 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
             "Not authorized to transfer"
         );
 
-        balanceOf[from]--;
-        balanceOf[to]++;
+        balances[from]--;
+        balances[to]++;
 
-        ownerOf[tokenId] = to;
+        owners[tokenId] = to;
         delete getApproved[tokenId];
         emit Transfer(from, to, tokenId);
     }
@@ -119,19 +129,19 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
         internal virtual
     {
         require(to != address(0), "Invalid Recipient");
-        require(ownerOf[tokenId] == address(0), "Token minted");
-        balanceOf[to]++;
-        ownerOf[tokenId] = to;
+        require(owners[tokenId] == address(0), "Token minted");
+        balances[to]++;
+        owners[tokenId] = to;
         emit Transfer(address(0), to, tokenId);
     }
 
     function _burn(uint256 tokenId)
         internal virtual 
     {
-        address owner = ownerOf[tokenId];
+        address owner = owners[tokenId];
         require(owner != address(0), "Not minted");
-        balanceOf[owner]--;
-        delete ownerOf[tokenId];
+        balances[owner]--;
+        delete owners[tokenId];
         delete getApproved[tokenId];
         emit Transfer(owner, address(0), tokenId);
     }
@@ -142,8 +152,8 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
         _mint(to, tokenId);
         require(
             to.code.length == 0
-            || ERC721Receiver(to).onERC721Received(msg.sender, address(0), tokenId, "") ==
-                ERC721Receiver.onERC721Received.selector,
+            || IERC721TokenReceiver(to).onERC721Received(msg.sender, address(0), tokenId, "") ==
+                IERC721TokenReceiver.onERC721Received.selector,
             "Unsafe transfer"    
         ); 
     }
@@ -154,8 +164,8 @@ contract ERC721 is IERC165, IERC721, IERC721Metadata {
         _mint(to, tokenId);
         require(
             to.code.length == 0
-            || ERC721Receiver(to).onERC721Received(msg.sender, address(0), tokenId, data) ==
-                ERC721Receiver.onERC721Received.selector,
+            || IERC721TokenReceiver(to).onERC721Received(msg.sender, address(0), tokenId, data) ==
+                IERC721TokenReceiver.onERC721Received.selector,
             "Unsafe transfer"    
         ); 
     }
