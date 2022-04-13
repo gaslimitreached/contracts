@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 
 import "./utils/BaseTest.sol";
 import "./utils/mocks/MockERC20.sol";
-import "./utils/users/ERC20User.sol";
 
 contract ERC20Test is BaseTest {
     MockERC20 internal token;
@@ -44,10 +43,11 @@ contract ERC20Test is BaseTest {
     }
 
     function testTransferFrom() public {
-        ERC20User alice = new ERC20User(token);
+	    address alice = address(0xA71CE);
         token.mint(address(alice), 1 ether);
 
-        alice.approve(address(this), 1 ether);
+	    vm.prank(address(alice));
+	    token.approve(address(this), 1 ether);
 
         assertTrue(token.transferFrom(address(alice), address(0xB0B), 1 ether));
         assertEq(token.totalSupply(), 1 ether);
