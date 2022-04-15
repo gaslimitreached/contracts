@@ -2,10 +2,10 @@
 
 pragma solidity ^0.8.0;
 
-import "./utils/BaseTest.sol";
+import "forge-std/Test.sol";
 import "./utils/mocks/MockERC721.sol";
 
-contract ERC721Test is BaseTest {
+contract ERC721Test is Test {
     MockERC721 internal token;
 
     function setUp() public {

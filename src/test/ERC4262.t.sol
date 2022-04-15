@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.0;
 
-import "./utils/BaseTest.sol";
+import "forge-std/Test.sol";
 import "./utils/mocks/MockERC20.sol";
 import "./utils/mocks/MockERC4626.sol";
 
-contract ERC2646 is BaseTest {
+contract ERC2646 is Test {
     MockERC20 internal underlying;
     MockERC4626 internal vault;
 
