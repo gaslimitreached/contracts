@@ -10,7 +10,7 @@ abstract contract ERC20Permit is ERC20, IERC2612 {
     uint256 internal immutable INITIAL_CHAIN_ID = block.chainid;
     bytes32 internal immutable INITIAL_DOMAIN_SEPARATOR = computeDomainSeperator();
     // solhint-enable var-name-mixedcase
-    mapping(address => uint256) private nonces;
+    mapping(address => uint256) public nonces;
 
     function permit(
         address owner,
@@ -26,7 +26,7 @@ abstract contract ERC20Permit is ERC20, IERC2612 {
             address recovered = ecrecover(
                 keccak256(
                     abi.encodePacked(
-                        "\x19\x01",
+                        hex"1901",
                         DOMAIN_SEPERATOR(),
                         keccak256(
                             abi.encode(
