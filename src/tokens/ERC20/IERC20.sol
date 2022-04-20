@@ -10,7 +10,6 @@ interface IERC20 {
     /// @dev Emitted when the allowance of a `spender` is set.
     event Approval(address indexed owner, address indexed spender, uint256 amount);
     /// @notice Total amount of tokens in existence.
-    /// @dev 
     /// @return The existing supply.
     function totalSupply() external view returns (uint256);
     /// @notice Amount of tokens owned by `account`.

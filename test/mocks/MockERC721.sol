@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "../../../tokens/ERC721/ERC721.sol";
+import "../../src/tokens/ERC721/ERC721.sol";
 
 contract MockERC721 is ERC721 {
     // solhint-disable no-empty-blocks

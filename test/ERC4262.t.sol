@@ -3,8 +3,8 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import "./utils/mocks/MockERC20.sol";
-import "./utils/mocks/MockERC4626.sol";
+import "./mocks/MockERC20.sol";
+import "./mocks/MockERC4626.sol";
 
 contract ERC2646 is Test {
     MockERC20 internal underlying;
@@ -15,7 +15,8 @@ contract ERC2646 is Test {
         vault = new MockERC4626(underlying, "MockTokenVault", "MTV");
     }
 
-    function testFailRedeemZero() public {
+    function testRedeemZero() public {
+        vm.expectRevert("No Shares");
         vault.redeem(0, address(this), address(this));
     }
 

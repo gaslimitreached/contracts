@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import "./MockERC20.sol";
-import "../../../tokens/ERC20/extensions/ERC20Permit.sol";
+import "../../src/tokens/ERC20/extensions/ERC20Permit.sol";
 
 contract MockERC20Permit is MockERC20, ERC20Permit {
     constructor(

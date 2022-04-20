@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "../../../tokens/ERC20/ERC20.sol";
+import "../../src/tokens/ERC20/ERC20.sol";
 
 contract MockERC20 is ERC20 {
     constructor(

@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import "../../../tokens/ERC20/ERC20.sol";
-import "../../../mixins/ERC4626.sol";
+import "../../src/tokens/ERC20/ERC20.sol";
+import "../../src/mixins/ERC4626.sol";
 
 contract MockERC4626 is ERC4626 {
     uint256 public depositHookCallCounter;

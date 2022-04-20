@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import "./utils/Mocks/MockOwnable.sol";
+import "./Mocks/MockOwnable.sol";
 
 contract OwnableTest is Test {
     MockOwnable internal mock;
@@ -18,8 +18,9 @@ contract OwnableTest is Test {
         assertEq(mock.owner(), address(0xB0B));
     }
 
-    function testFailTransferToZeroAddress() public {
+    function testTransferToZeroAddress() public {
         vm.prank(mock.owner());
+        vm.expectRevert("Zero address");
         mock.transferOwnership(address(0));
     }
 
@@ -48,8 +49,9 @@ contract OwnableTest is Test {
         assertEq(mock.owner(), successor);
     }
 
-    function testFailCalledByNonOwner(address addr) public {
-        require(addr != mock.owner());
+    function testCalledByNonOwner(address addr) public {
+        if (addr == mock.owner()) return;
+        vm.expectRevert("Ownable: caller is not the owner");
         vm.prank(addr);
         mock.protected();
     }

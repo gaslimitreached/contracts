@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import "./utils/mocks/MockERC20Permit.sol";
+import "./mocks/MockERC20Permit.sol";
 
 contract ERC20PermitTest is Test {
     MockERC20Permit internal token;
@@ -45,7 +45,7 @@ contract ERC20PermitTest is Test {
         assertEq(token.nonces(owner), 1);
     }
 
-    function testFailPermitBadDeadline() public {
+    function testPermitBadDeadline() public {
         uint256 key = 0xA71CE;
         address owner = vm.addr(key);
 
@@ -69,10 +69,11 @@ contract ERC20PermitTest is Test {
             )
         );
 
+        vm.expectRevert("ERC2612: Invalid signer");
         token.permit(owner, address(0xB0B), 1 ether, block.timestamp + 1, v, r, s);
     }
 
-    function testFailPermitBadNonce() public {
+    function testPermitBadNonce() public {
         uint256 key = 0xA71CE;
         address owner = vm.addr(key);
 
@@ -96,10 +97,11 @@ contract ERC20PermitTest is Test {
             )
         );
 
+        vm.expectRevert("ERC2612: Invalid signer");
         token.permit(owner, address(0xB0B), 1 ether, block.timestamp, v, r, s);
     }
 
-    function testFailPermitReplay() public {
+    function testPermitReplay() public {
         uint256 key = 0xA71CE;
         address owner = vm.addr(key);
 
@@ -124,6 +126,7 @@ contract ERC20PermitTest is Test {
         );
 
         token.permit(owner, address(0xB0B), 1 ether, block.timestamp, v, r, s);
+        vm.expectRevert("ERC2612: Invalid signer");
         token.permit(owner, address(0xB0B), 1 ether, block.timestamp, v, r, s);
     }
 }
