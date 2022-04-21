@@ -23,7 +23,7 @@ abstract contract OwnableByNomination is Ownable {
     /// @dev Nominate new owner
     /// @param nominee Successor's address
     function nominateSuccessor(address nominee) public virtual onlyOwner {
-        require(nominee != address(0));
+        require(nominee != address(0), "Zero address");
         nominated = nominee;
         emit SuccessorNominated(owner, nominee);
     }

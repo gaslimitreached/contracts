@@ -28,4 +28,9 @@ contract OwnableByNominationTest is Test {
         mock.acceptNomination();
         assertEq(mock.owner(), successor);
     }
+
+    function testNominateZeroAddress() public {
+        vm.expectRevert("Zero address");
+        mock.nominateSuccessor(address(0));
+    }
 }
