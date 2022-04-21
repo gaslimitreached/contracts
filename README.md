@@ -18,3 +18,5 @@ These contracts were inspired by or directly modified from many sources, primari
 - [solmate](https:/github.com/rari-capital/solmate)
 - [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts)
 - [Uniswap](https://github.com/Uniswap/uniswap-lib)
+- [BoringSolidity](https://github.com/boringcrypto/BoringSolidity)
+- [Ethier](https://github.com/divergencetech/ethier)
