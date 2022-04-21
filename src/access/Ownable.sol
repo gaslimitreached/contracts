@@ -5,10 +5,8 @@ pragma solidity ^0.8.0;
 /// @author Modified from OpenZeppelin (https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol)
 abstract contract Ownable {
     address public owner;
-    address public nominated;
 
     event OwnershipTransferred(address indexed predecessor, address indexed successor);
-    event SuccessorNominated(address indexed nominator, address indexed nominee);
 
     constructor() {
         _transferOwnership(msg.sender);
@@ -20,19 +18,6 @@ abstract contract Ownable {
         _;
     }
  
-    function acceptNomination() public {
-        require(msg.sender == nominated, "Ownable: not nominated");
-        _transferOwnership(nominated);
-        delete nominated;
-    }
-
-    /// @dev Nominate new owner
-    /// @param nominee Successor's address
-    function nominateSuccessor(address nominee) public onlyOwner {
-        nominated = nominee;
-        emit SuccessorNominated(owner, nominee);
-    }
-
     /// @dev Renounce ownership by setting owner to zero address.
     function renounceOwnership()
         public
