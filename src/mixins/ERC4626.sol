@@ -2,11 +2,12 @@
 
 pragma solidity ^0.8.0;
 
+import "../interfaces/IERC165.sol";
 import "../interfaces/IERC4626.sol";
 import "../tokens/ERC20/ERC20.sol";
 import "../utils/FixedPointMath.sol";
 
-abstract contract ERC4626 is ERC20, IERC4626 {
+abstract contract ERC4626 is ERC20, IERC4626, IERC165 {
     using FixedPointMath for uint256;
     ERC20 internal immutable underlying;
 
@@ -16,6 +17,15 @@ abstract contract ERC4626 is ERC20, IERC4626 {
         string memory symbol
     ) ERC20(name, symbol, asset_.decimals()) {
         underlying = asset_;
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public view virtual
+        returns (bool)
+    {
+        return interfaceId == type(IERC165).interfaceId
+            || interfaceId == type(IERC4626).interfaceId
+            ;
     }
 
     function asset()

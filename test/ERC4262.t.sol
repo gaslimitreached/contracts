@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 import "forge-std/Test.sol";
 import "./mocks/MockERC20.sol";
 import "./mocks/MockERC4626.sol";
+import "../src/interfaces/Constants.sol";
 
 contract ERC2646 is Test {
     MockERC20 internal underlying;
@@ -27,5 +28,10 @@ contract ERC2646 is Test {
         assertEq(vault.convertToAssets(vault.balanceOf(address(this))), 0);
         assertEq(vault.totalSupply(), 0);
         assertEq(vault.totalAssets(), 0);
+    }
+
+    function testSupportsInterfaces() public view {
+        assert(vault.supportsInterface(_INTERFACE_ID_ERC165));
+        assert(vault.supportsInterface(_INTERFACE_ID_ERC4626));
     }
 }

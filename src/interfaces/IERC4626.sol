@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 
 /// @title ERC4626 - Tokenized Vault Standard
 /// @dev https://eips.ethereum.org/EIPS/eip-4626
+/// Note: the ERC-165 identifier for this interface is 0x87dfe5a0
 interface IERC4626 {
     /// @notice Address of the underlying token.
     /// @return assetTokenAddress Underlying token address.
