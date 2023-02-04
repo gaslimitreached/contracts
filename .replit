@@ -1,0 +1,4 @@
+run = "make setup"
+
+[nix]
+channel = "stable-22_11"

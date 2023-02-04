@@ -1,0 +1,1 @@
+alias forge=/home/runner/.foundry/bin/forge

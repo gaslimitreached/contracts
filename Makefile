@@ -24,3 +24,6 @@ build  :; forge clean && forge build --optimize --optimize-runs 200
 lint :; solhint './src/**/*.sol'
 
 test :; forge test -vvv
+
+# replit
+setup :; curl -L http://foundry.paradigm.xyz | sh && ~/.foundry/bin/foundryup
